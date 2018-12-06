@@ -1,5 +1,5 @@
 class SubTour:
-    def __init__(self, tour, cost, matrix, low_bound):
+    def __init__(self, tour, cost, matrix=None, low_bound=None):
         self.tour = tour
         self.cost = cost
         self.matrix = matrix
@@ -14,3 +14,14 @@ class SubTour:
 
     def get_priority(self):
         return self.low_bound / 16 - len(self.tour)
+
+
+class City:
+    def __init__(self, x, y, label):
+        self.x = x
+        self.y = y
+        self.label = label
+
+    def cost_to(self, other_city):
+        # TODO write function
+        pass

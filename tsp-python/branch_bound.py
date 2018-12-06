@@ -62,7 +62,7 @@ class BranchBoundSolver:
             self.pruned += 1
             return
 
-        cost_to_travel = from_city.costTo(to_city)
+        cost_to_travel = from_city.cost_to(to_city)
         # Check if cost to travel is infinite
         if math.isinf(cost_to_travel):
             self.pruned += 1
@@ -100,7 +100,7 @@ class BranchBoundSolver:
         :param cost: the cost of the tour without the cost from final to first
         :param tour: the potential tour
         """
-        to_origin_cost = tour[-1].costTo(tour[0])
+        to_origin_cost = tour[-1].cost_to(tour[0])
         if math.isinf(to_origin_cost):
             # Incomplete tour
             self.pruned += 1
@@ -116,9 +116,9 @@ class BranchBoundSolver:
                       .format("->".join([c.name() for c in tour]), cost))
                 self.solutions += 1
                 self.bssf = cost
-                self.best_tour = tour
+                self.best_tour = SubTour(tour, cost)
             elif self.best_tour is None:
-                self.best_tour = tour
+                self.best_tour = SubTour(tour, cost)
 
     def build_results(self, total_time):
         """
@@ -130,11 +130,10 @@ class BranchBoundSolver:
         print("Building results...")
         results = {}
         if self.best_tour is not None:
-            best = TSPSolution(self.best_tour)
-            results['cost'] = best.cost
-            results['soln'] = best
+            results['cost'] = self.best_tour.cost
+            results['soln'] = self.best_tour.tour
         results['time'] = total_time
-        results['count'] = self.solutions
+        results['soln_count'] = self.solutions
         results['max'] = self.q_max_size
         results['total'] = self.created
         results['pruned'] = self.pruned
@@ -158,7 +157,7 @@ class BranchBoundSolver:
                 if i == j:
                     matrix[i] += [math.inf]
                 else:
-                    matrix[i] += [cities[i].costTo(cities[j])]
+                    matrix[i] += [cities[i].cost_to(cities[j])]
         low_bound = self.reduce_bound_matrix(matrix)
         return matrix, low_bound
 

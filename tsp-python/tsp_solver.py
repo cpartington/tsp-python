@@ -3,6 +3,7 @@ import sys
 
 class TSPSolver:
     def __init__(self):
+        # TODO write class
         pass
 
 
