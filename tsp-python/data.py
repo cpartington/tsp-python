@@ -1,3 +1,6 @@
+import math
+
+
 class SubTour:
     def __init__(self, tour, cost, matrix=None, low_bound=None):
         self.tour = tour
@@ -23,5 +26,5 @@ class City:
         self.label = label
 
     def cost_to(self, other_city):
-        # TODO write function
-        pass
+        # TODO finish function
+        return math.sqrt(math.pow(self.x - other_city.x, 2) + math.pow(self.y - other_city.y, 2))
